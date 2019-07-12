@@ -24,12 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
     exit(0);
 }
 
-
-// header('Access-Control-Allow-Origin: *');
-//   header("Access-Control-Allow-Credentials: true");
-//   header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-//   header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-//   header("Content-Type: application/json; charset=utf-8");
 require APPPATH . '/libraries/REST_Controller.php';
 use Restserver\Libraries\REST_Controller;
 
@@ -38,6 +32,7 @@ class User extends REST_Controller {
     function __construct($config = 'rest') {
         parent::__construct($config);
         $this->load->database();
+        $this->load->model('user_m');
     }
 
     function index_post() {
@@ -56,6 +51,62 @@ class User extends REST_Controller {
             }
             echo $result;
         }
+
+        if($aksi=='adduser') {
+            
+            $data = [
+                'username' => $this->post('username'),
+                'password' => $this->post('password'),
+                'nama' => $this->post('nama'),
+                'status' => 'user'
+            ];
+            $q = $this->user_m->tambah_user($data);
+            if($q) {
+                $result = json_encode(array('success'=>true, 'msg' => 'Sukses tambah user'));    
+            } else {
+                $result = json_encode(array('success'=>false, 'msg'=>'Error'));    
+            }
+            echo $result;
+        }
+
+        if($aksi=='deleteuser') {
+            $id = $this->post('id_user');
+            $q = $this->user_m->hapus_user($id);
+            
+            $result = json_encode(array('success'=>true, 'msg' => 'Sukses hapus user'));    
+            
+            echo $result;
+        }
+
+        if($aksi=='getpesan') {
+            $id = $this->post('nama');
+            $q = $this->user_m->getpesan($id);
+            
+            $result = json_encode(array('success'=>true, 'result' => $q));    
+            
+            echo $result;
+        }
+
+        if($aksi=='balaspesan') {
+            $data = [
+                'isi_pesan' => $this->post('isi_pesan'),
+                'dari' => $this->post('dari'),
+                'untuk' => $this->post('untuk'),
+                'tanggal' => date('Y-m-d')
+            ];
+            $q = $this->user_m->tambah_pesan($data);
+            $result = json_encode(array('success'=>true, 'msg' => 'Sukses balas pesan'));
+            echo $result;
+        }
+
+        if($aksi=='deletepesan') {
+            $id = $this->post('id_pesan');
+            $q = $this->user_m->hapus_pesan($id);
+            
+            $result = json_encode(array('success'=>true,  'Sukses hapus pesan'));    
+            
+            echo $result;
+        }                
     }
 }
 ?>
