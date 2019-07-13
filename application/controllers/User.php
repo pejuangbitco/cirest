@@ -78,6 +78,14 @@ class User extends REST_Controller {
             echo $result;
         }
 
+        if($aksi=='getuser') {            
+            $q = $this->user_m->getUser(array('status' => 'user'));
+            
+            $result = json_encode(array('success'=>true, 'result' => $q));    
+            
+            echo $result;
+        }
+
         if($aksi=='getpesan') {
             $id = $this->post('nama');
             $q = $this->user_m->getpesan($id);
@@ -87,13 +95,30 @@ class User extends REST_Controller {
             echo $result;
         }
 
-        if($aksi=='balaspesan') {
+        if($aksi=='kirimpesan') {
             $data = [
                 'isi_pesan' => $this->post('isi_pesan'),
                 'dari' => $this->post('dari'),
                 'untuk' => $this->post('untuk'),
                 'tanggal' => date('Y-m-d')
             ];
+            
+            $q = $this->user_m->tambah_pesan($data);
+            $result = json_encode(array('success'=>true, 'msg' => 'Sukses kirim pesan'));
+            echo $result;
+        }
+
+        if($aksi=='balaspesan') {
+            $old_msg = [
+                'dibalas' => 1
+            ];
+            $data = [
+                'isi_pesan' => $this->post('isi_pesan'),
+                'dari' => $this->post('dari'),
+                'untuk' => $this->post('untuk'),
+                'tanggal' => date('Y-m-d')
+            ];
+            $this->user_m->balas_pesan($this->post('id_pesan'), $old_msg);
             $q = $this->user_m->tambah_pesan($data);
             $result = json_encode(array('success'=>true, 'msg' => 'Sukses balas pesan'));
             echo $result;
@@ -106,6 +131,63 @@ class User extends REST_Controller {
             $result = json_encode(array('success'=>true,  'Sukses hapus pesan'));    
             
             echo $result;
+        }
+
+        if($aksi=='ubah_password') {
+            $id = $this->post('id_user');
+            $password = $this->post('password_baru');
+            $data = [                
+                'password' => $password
+            ];
+            $q = $this->user_m->ubah_password($id,$data);
+            
+            $result = json_encode(array('success'=>true,  'msg'=>'Sukses ubah password'));
+            echo $result;
+        }
+
+        if($aksi=='getform') {
+            $this->load->model('form_m');
+            $jenis = $this->post('jenis');
+            if($jenis=='DFR') {
+                $q = $this->form_m->getDFR();
+                $result = json_encode(array('success'=>true, 'result' => $q));    
+                echo $result;
+                exit;
+            }
+        }
+
+        // bagian API form
+        if($aksi=='submitform') {
+            $this->load->model('form_m');
+            $jenis = $this->post('jenis');
+            $data = $this->post('data');
+            if($jenis=='DFR') {
+                foreach ($data as $key => $value) {
+                    if($key != 0) {
+                        $row = [
+                        'alat' => $key,
+                        'kondisi' => $value,
+                        'tanggal' => date('Y-m-d')
+                        ];
+                        $this->form_m->inputDFR($row);    
+                    }
+                }                
+                $result = json_encode(array('success'=>true));    
+                echo $result;
+                exit;
+            }
+        }
+
+        if($aksi=='lihatform') {
+            $this->load->model('form_m');
+            $jenis = $this->post('jenis');
+            $tanggal = $this->post('tanggal');
+            if($jenis=='DFR') {
+                $q = $this->form_m->lihatFormDFR($tanggal);
+                $result = json_encode(array('success'=>true,'result' => $q));    
+                echo $result;
+                exit;
+            }
         }                
     }
 }
