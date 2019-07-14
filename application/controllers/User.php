@@ -161,18 +161,27 @@ class User extends REST_Controller {
             $this->load->model('form_m');
             $jenis = $this->post('jenis');
             $data = $this->post('data');
+            $admin = $this->post('admin');
+            $tanggal = $this->post('tanggal');
             if($jenis=='DFR') {
+                $cek = $this->form_m->cekFormDFR();
+                if($cek) {
+                    $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
+                    echo $result;
+                    exit;
+                }
                 foreach ($data as $key => $value) {
                     if($key != 0) {
                         $row = [
                         'alat' => $key,
                         'kondisi' => $value,
-                        'tanggal' => date('Y-m-d')
+                        'admin' => $admin,
+                        'tanggal' => $tanggal
                         ];
                         $this->form_m->inputDFR($row);    
                     }
                 }                
-                $result = json_encode(array('success'=>true));    
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
                 echo $result;
                 exit;
             }
