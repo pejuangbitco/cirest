@@ -377,7 +377,17 @@ class User extends REST_Controller {
                 $form="form_dfr";
                 $alat='alat_dfr';
                 $q = $this->form_m->lihatForm($form,$alat,$tanggal);
-                $result = json_encode(array('success'=>true,'result' => $q));    
+                if(empty($q)||!isset($q)) {
+                    $result = json_encode(array('success'=>false,'result' => $q));    
+                    echo $result;
+                    exit;    
+                }
+                if($q[0]->user) {
+                    $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>$q[0]->user));    
+                        echo $result;
+                        exit;    
+                }
+                $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>false));    
                 echo $result;
                 exit;
             }
@@ -385,7 +395,17 @@ class User extends REST_Controller {
                 $form="form_ip";
                 $alat='alat_ip';
                 $q = $this->form_m->lihatForm($form,$alat,$tanggal);
-                $result = json_encode(array('success'=>true,'result' => $q));    
+                if(empty($q)||!isset($q)) {
+                    $result = json_encode(array('success'=>false,'result' => $q));    
+                    echo $result;
+                    exit;    
+                }
+                if($q[0]->user) {
+                    $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>$q[0]->user));    
+                        echo $result;
+                        exit;    
+                }
+                $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>false));    
                 echo $result;
                 exit;
             }
@@ -393,7 +413,17 @@ class User extends REST_Controller {
                 $form="form_plc";
                 $alat='alat_plc';
                 $q = $this->form_m->lihatForm($form,$alat,$tanggal);
-                $result = json_encode(array('success'=>true,'result' => $q));    
+                if(empty($q)||!isset($q)) {
+                    $result = json_encode(array('success'=>false,'result' => $q));    
+                    echo $result;
+                    exit;    
+                }
+                if($q[0]->user) {
+                    $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>$q[0]->user));    
+                        echo $result;
+                        exit;    
+                }
+                $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>false));    
                 echo $result;
                 exit;
             }
@@ -401,7 +431,16 @@ class User extends REST_Controller {
                 $form="form_ms";
                 $alat='alat_ms';
                 $q = $this->form_m->lihatForm($form,$alat,$tanggal);
-                $result = json_encode(array('success'=>true,'result' => $q));    
+                if(empty($q)||!isset($q)) {
+                    $result = json_encode(array('success'=>false,'result' => $q));    
+                    echo $result;
+                    exit;    
+                }if($q[0]->user) {
+                    $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>$q[0]->user));    
+                        echo $result;
+                        exit;    
+                }
+                $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>false));    
                 echo $result;
                 exit;
             }
@@ -409,7 +448,16 @@ class User extends REST_Controller {
                 $form="form_rtu";
                 $alat='alat_rtu';
                 $q = $this->form_m->lihatForm($form,$alat,$tanggal);
-                $result = json_encode(array('success'=>true,'result' => $q));    
+                if(empty($q)||!isset($q)) {
+                    $result = json_encode(array('success'=>false,'result' => $q));    
+                    echo $result;
+                    exit;    
+                }if($q[0]->user) {
+                    $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>$q[0]->user));    
+                        echo $result;
+                        exit;    
+                }
+                $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>false));    
                 echo $result;
                 exit;
             }
@@ -417,7 +465,16 @@ class User extends REST_Controller {
                 $form="form_radio";
                 $alat='alat_radio';
                 $q = $this->form_m->lihatForm($form,$alat,$tanggal);
-                $result = json_encode(array('success'=>true,'result' => $q));    
+                if(empty($q)||!isset($q)) {
+                    $result = json_encode(array('success'=>false,'result' => $q));    
+                    echo $result;
+                    exit;    
+                }if($q[0]->user) {
+                    $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>$q[0]->user));    
+                        echo $result;
+                        exit;    
+                }
+                $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>false));    
                 echo $result;
                 exit;
             }
@@ -425,7 +482,34 @@ class User extends REST_Controller {
                 $form="form_scada";
                 $alat='alat_scada';
                 $q = $this->form_m->lihatForm($form,$alat,$tanggal);
-                $result = json_encode(array('success'=>true,'result' => $q));    
+                if(empty($q)||!isset($q)) {
+                    $result = json_encode(array('success'=>false,'result' => $q));    
+                    echo $result;
+                    exit;    
+                }if($q[0]->user) {
+                    $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>$q[0]->user));    
+                        echo $result;
+                        exit;    
+                }
+                $result = json_encode(array('success'=>true,'result' => $q,'dilihat'=>false));    
+                echo $result;
+                exit;
+            }
+        }
+
+        if($aksi=='userlihat') {
+            $this->load->model('form_m');
+            $form = $this->post('form');
+            $tanggal = $this->post('tanggal');
+            $user = $this->post('user');
+            $cek = $this->form_m->cekForm($form,$tanggal);
+            if($cek[0]->user) {
+                $this->form_m->userlihat($form,$tanggal,$user);
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil dicatat'));    
+                echo $result;
+                exit;
+            } else {
+                $result = json_encode(array('success'=>true, 'msg'=>$cek[0]->user));    
                 echo $result;
                 exit;
             }
