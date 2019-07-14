@@ -15,8 +15,19 @@ class Form_m extends CI_Model {
 	}
 
 	public function lihatFormDFR($tanggal) {
-		$sql = "SELECT * FROM alat_dfr JOIN form_dfr on alat_dfr.id_alat=form_dfr.alat WHERE form_dfr.tanggal=? GROUP BY alat_dfr.nama_alat ORDER BY form_dfr.tanggal ;";
-		$q = $this->db->query($sql, array($tanggal));
+		// $sql = "SELECT * FROM alat_dfr JOIN form_dfr on alat_dfr.id_alat=form_dfr.alat WHERE form_dfr.tanggal=? GROUP BY alat_dfr.nama_alat ORDER BY form_dfr.tanggal ;";
+		// $this->db->select('*');
+		
+		
+		$this->db->select('*');
+		$this->db->from('form_dfr');
+		$this->db->join('alat_dfr', 'form_dfr.alat = alat_dfr.id_alat');
+		$this->db->where('form_dfr.tanggal', $tanggal);
+		$this->db->group_by('form_dfr.alat');
+		// $this->db->order_by('form_dfr.tanggal', 'desc');
+		$q = $this->db->get();	
+
+		// $q = $this->db->query($sql, array($tanggal));
 		return $q->result();
 	}
 
