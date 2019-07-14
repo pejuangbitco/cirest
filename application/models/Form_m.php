@@ -23,11 +23,18 @@ class Form_m extends CI_Model {
 		$this->db->from('form_dfr');
 		$this->db->join('alat_dfr', 'form_dfr.alat = alat_dfr.id_alat');
 		$this->db->where('form_dfr.tanggal', $tanggal);
-		$this->db->group_by('form_dfr.alat');
 		// $this->db->order_by('form_dfr.tanggal', 'desc');
 		$q = $this->db->get();	
 
 		// $q = $this->db->query($sql, array($tanggal));
+		return $q->result();
+	}
+
+	public function cekFormDFR()
+	{
+		$date = date('Y-m-d');
+		$this->db->where('tanggal', $date);
+		$q = $this->db->get('form_dfr');
 		return $q->result();
 	}
 
