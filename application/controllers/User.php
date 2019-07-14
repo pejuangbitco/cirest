@@ -149,7 +149,50 @@ class User extends REST_Controller {
             $this->load->model('form_m');
             $jenis = $this->post('jenis');
             if($jenis=='DFR') {
-                $q = $this->form_m->getDFR();
+                $form = 'alat_dfr';
+                $q = $this->form_m->getForm($form);
+                $result = json_encode(array('success'=>true, 'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='IP') {
+                $form = 'alat_ip';
+                $q = $this->form_m->getForm($form);
+                $result = json_encode(array('success'=>true, 'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='PLC') {
+                $form = 'alat_plc';
+                $q = $this->form_m->getForm($form);
+                $result = json_encode(array('success'=>true, 'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='MS') {
+                $form = 'alat_ms';
+                $q = $this->form_m->getForm($form);
+                $result = json_encode(array('success'=>true, 'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='RTU') {
+                $form = 'alat_rtu';
+                $q = $this->form_m->getForm($form);
+                $result = json_encode(array('success'=>true, 'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='RADIO') {
+                $form = 'alat_radio';
+                $q = $this->form_m->getForm($form);
+                $result = json_encode(array('success'=>true, 'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='SCADA') {
+                $form = 'alat_scada';
+                $q = $this->form_m->getForm($form);
                 $result = json_encode(array('success'=>true, 'result' => $q));    
                 echo $result;
                 exit;
@@ -164,7 +207,8 @@ class User extends REST_Controller {
             $admin = $this->post('admin');
             $tanggal = $this->post('tanggal');
             if($jenis=='DFR') {
-                $cek = $this->form_m->cekFormDFR();
+                $form='form_dfr';
+                $cek = $this->form_m->cekForm($form,$tanggal);
                 if($cek) {
                     $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
                     echo $result;
@@ -178,7 +222,145 @@ class User extends REST_Controller {
                         'admin' => $admin,
                         'tanggal' => $tanggal
                         ];
-                        $this->form_m->inputDFR($row);    
+                        $this->form_m->inputForm($form,$row);       
+                    }
+                }                
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='IP') {
+                $form='form_ip';
+                $cek = $this->form_m->cekForm($form,$tanggal);
+                if($cek) {
+                    $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
+                    echo $result;
+                    exit;
+                }
+                foreach ($data as $key => $value) {
+                    if($key != 0) {
+                        $row = [
+                        'alat' => $key,
+                        'kondisi' => $value,
+                        'admin' => $admin,
+                        'tanggal' => $tanggal
+                        ];
+                        $this->form_m->inputForm($form,$row);    
+                    }
+                }                
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='PLC') {
+                $form='form_plc';
+                $cek = $this->form_m->cekForm($form,$tanggal);
+                if($cek) {
+                    $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
+                    echo $result;
+                    exit;
+                }
+                foreach ($data as $key => $value) {
+                    if($key != 0) {
+                        $row = [
+                        'alat' => $key,
+                        'kondisi' => $value,
+                        'admin' => $admin,
+                        'tanggal' => $tanggal
+                        ];
+                        $this->form_m->inputForm($form,$row);    
+                    }
+                }                
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='MS') {
+                $form='form_ms';
+                $cek = $this->form_m->cekForm($form,$tanggal);
+                if($cek) {
+                    $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
+                    echo $result;
+                    exit;
+                }
+                foreach ($data as $key => $value) {
+                    if($key != 0) {
+                        $row = [
+                        'alat' => $key,
+                        'kondisi' => $value,
+                        'admin' => $admin,
+                        'tanggal' => $tanggal
+                        ];
+                        $this->form_m->inputForm($form,$row);    
+                    }
+                }                
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='RTU') {
+                $form='form_rtu';
+                $cek = $this->form_m->cekForm($form,$tanggal);
+                if($cek) {
+                    $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
+                    echo $result;
+                    exit;
+                }
+                foreach ($data as $key => $value) {
+                    if($key != 0) {
+                        $row = [
+                        'alat' => $key,
+                        'kondisi' => $value,
+                        'admin' => $admin,
+                        'tanggal' => $tanggal
+                        ];
+                        $this->form_m->inputForm($form,$row);    
+                    }
+                }                
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='RADIO') {
+                $form='form_radio';
+                $cek = $this->form_m->cekForm($form,$tanggal);
+                if($cek) {
+                    $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
+                    echo $result;
+                    exit;
+                }
+                foreach ($data as $key => $value) {
+                    if($key != 0) {
+                        $row = [
+                        'alat' => $key,
+                        'kondisi' => $value,
+                        'admin' => $admin,
+                        'tanggal' => $tanggal
+                        ];
+                        $this->form_m->inputForm($form,$row);    
+                    }
+                }                
+                $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='SCADA') {
+                $form='form_scada';
+                $cek = $this->form_m->cekForm($form,$tanggal);
+                if($cek) {
+                    $result = json_encode(array('success'=>true, 'msg'=>'Form sudah pernah disubmit'));
+                    echo $result;
+                    exit;
+                }
+                foreach ($data as $key => $value) {
+                    if($key != 0) {
+                        $row = [
+                        'alat' => $key,
+                        'kondisi' => $value,
+                        'admin' => $admin,
+                        'tanggal' => $tanggal
+                        ];
+                        $this->form_m->inputForm($form,$row);    
                     }
                 }                
                 $result = json_encode(array('success'=>true, 'msg'=>'Berhasil submit form'));    
@@ -192,7 +374,57 @@ class User extends REST_Controller {
             $jenis = $this->post('jenis');
             $tanggal = $this->post('tanggal');
             if($jenis=='DFR') {
-                $q = $this->form_m->lihatFormDFR($tanggal);
+                $form="form_dfr";
+                $alat='alat_dfr';
+                $q = $this->form_m->lihatForm($form,$alat,$tanggal);
+                $result = json_encode(array('success'=>true,'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='IP') {
+                $form="form_ip";
+                $alat='alat_ip';
+                $q = $this->form_m->lihatForm($form,$alat,$tanggal);
+                $result = json_encode(array('success'=>true,'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='PLC') {
+                $form="form_plc";
+                $alat='alat_plc';
+                $q = $this->form_m->lihatForm($form,$alat,$tanggal);
+                $result = json_encode(array('success'=>true,'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='MS') {
+                $form="form_ms";
+                $alat='alat_ms';
+                $q = $this->form_m->lihatForm($form,$alat,$tanggal);
+                $result = json_encode(array('success'=>true,'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='RTU') {
+                $form="form_rtu";
+                $alat='alat_rtu';
+                $q = $this->form_m->lihatForm($form,$alat,$tanggal);
+                $result = json_encode(array('success'=>true,'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='RADIO') {
+                $form="form_radio";
+                $alat='alat_radio';
+                $q = $this->form_m->lihatForm($form,$alat,$tanggal);
+                $result = json_encode(array('success'=>true,'result' => $q));    
+                echo $result;
+                exit;
+            }
+            if($jenis=='SCADA') {
+                $form="form_scada";
+                $alat='alat_scada';
+                $q = $this->form_m->lihatForm($form,$alat,$tanggal);
                 $result = json_encode(array('success'=>true,'result' => $q));    
                 echo $result;
                 exit;
